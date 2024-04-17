@@ -39,7 +39,7 @@ public class PedidoController {
     }
     
     @GetMapping("/{id}")
-    public PedidoDto findById(@PathVariable long id) {
+    public ResponseEntity<PedidoDto> findById(@PathVariable long id) {
     	return ResponseEntity.ok(pedidoService.findById(id));
     }
     
@@ -50,9 +50,9 @@ public class PedidoController {
     	return ResponseEntity.created(uri) .body(pedidoSaved);
     }
     
-    @PutMapping("{/id}")
+    @PutMapping("/{id}")
     public ResponseEntity<PedidoDto> update(@PathVariable long id, @RequestBody PedidoDto pedidoDto){
-    	return ResponseEntity.ok(PedidoService.update(id, pedidoDto));
+    	return ResponseEntity.ok(pedidoService.update(id, pedidoDto));
     }
     
     @DeleteMapping

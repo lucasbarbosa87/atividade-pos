@@ -1,11 +1,7 @@
 package com.aula.demo.models;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import com.aula.demo.dtos.ProdutoDto;
+import jakarta.persistence.*;
 
 @Entity
 @Table(name = "tb_produtos")
@@ -20,6 +16,34 @@ public class Produto {
 	private String descricao;
 	@Column(nullable = false)
 	private float preco;
+
+	public Pedido getPedido() {
+		return pedido;
+	}
+
+	public void setPedido(Pedido pedido) {
+		this.pedido = pedido;
+	}
+
+	@ManyToOne
+	@JoinColumn(name="pedido_id", nullable=false)
+	private Pedido pedido;
+
+	public Produto() {
+	}
+
+	public Produto(String nome, int quantidade, String descricao, float preco) {
+		this.nome = nome;
+		this.quantidade = quantidade;
+		this.descricao = descricao;
+		this.preco = preco;
+	}
+
+	public static Produto fromDto(ProdutoDto produtoDto) {
+		return new Produto(produtoDto.nome(), produtoDto.quantidade(), produtoDto.descricao(), produtoDto.preco());
+	}
+
+
 	public long getId() {
 		return id;
 	}
