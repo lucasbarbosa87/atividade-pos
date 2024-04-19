@@ -24,7 +24,7 @@ public class ProdutoService {
     }
 
     @Transactional
-    public ProdutoDto save(ProdutoDto produtoDto){
+    public ProdutoDto save(ProdutoDto produtoDto) {
         Produto produto = Produto.fromDto(produtoDto);
         Produto produtoSalvo = produtoRepository.save(produto);
         return new ProdutoDto(produtoSalvo);
@@ -46,5 +46,17 @@ public class ProdutoService {
         produto.setId(id);
         Produto produtoSalvo = produtoRepository.save(produto);
         return new ProdutoDto(produtoSalvo);
+    }
+
+    public ProdutoDto atualizarPreco(long id, float valor) {
+        Produto produto = produtoRepository.getReferenceById(id);
+        produto.setPreco(valor);
+        return new ProdutoDto(produtoRepository.save(produto));
+    }
+
+    public ProdutoDto atualizarQuantidade(long id, int valor) {
+        Produto produto = produtoRepository.getReferenceById(id);
+        produto.setQuantidade(valor);
+        return new ProdutoDto(produtoRepository.save(produto));
     }
 }

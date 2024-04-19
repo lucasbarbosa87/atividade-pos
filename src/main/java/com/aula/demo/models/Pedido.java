@@ -20,19 +20,24 @@ public class Pedido {
     private String endereco;
     @Enumerated(EnumType.STRING)
     private StatusPedido statusPedido;
-    @OneToMany(mappedBy = "pedido", cascade = CascadeType.ALL)
-    private List<Produto> produtos;
+    @ManyToOne
+    @JoinColumn(name="produto_id", nullable=false)
+    private Produto produto;
+
+    public Produto getProduto() {
+        return produto;
+    }
+
+    public void setProduto(Produto produto) {
+        this.produto = produto;
+    }
 
     public Pedido() {
     }
 
-    public Pedido(LocalDate datapedido, String endereco, List<Produto> produtos) {
+    public Pedido(LocalDate datapedido, String endereco) {
         this.dataPedido = datapedido;
         this.endereco = endereco;
-        for (Produto produto : produtos) {
-            produto.setPedido(this);
-        }
-        this.produtos = produtos;
     }
 
     public StatusPedido getStatusPedido() {
@@ -44,7 +49,7 @@ public class Pedido {
     }
 
     public static Pedido fromDto(PedidoDto pedidoDto) {
-        return new Pedido(pedidoDto.datapedido(), pedidoDto.endereco(), new ArrayList<>());
+        return new Pedido(pedidoDto.datapedido(), pedidoDto.endereco());
     }
 
     public long getId() {
@@ -69,22 +74,5 @@ public class Pedido {
 
     public void setEndereco(String endereco) {
         this.endereco = endereco;
-    }
-
-    public List<Produto> getProdutos() {
-        return produtos;
-    }
-
-    public void setProdutos(List<Produto> produtos) {
-        this.produtos = produtos;
-    }
-
-    public void addProdutos(List<ProdutoDto> produtos) {
-        for (ProdutoDto produtoDto : produtos) {
-            this.produtos.add(Produto.fromDto(produtoDto));
-        }
-        for (Produto produto : this.produtos) {
-            produto.setPedido(this);
-        }
     }
 }

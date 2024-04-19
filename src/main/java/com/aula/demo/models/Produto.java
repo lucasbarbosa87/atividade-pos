@@ -3,6 +3,8 @@ package com.aula.demo.models;
 import com.aula.demo.dtos.ProdutoDto;
 import jakarta.persistence.*;
 
+import java.util.List;
+
 @Entity
 @Table(name = "tb_produtos")
 public class Produto {
@@ -16,18 +18,8 @@ public class Produto {
 	private String descricao;
 	@Column(nullable = false)
 	private float preco;
-
-	public Pedido getPedido() {
-		return pedido;
-	}
-
-	public void setPedido(Pedido pedido) {
-		this.pedido = pedido;
-	}
-
-	@ManyToOne
-	@JoinColumn(name="pedido_id", nullable=false)
-	private Pedido pedido;
+	@OneToMany(mappedBy = "produto", cascade = CascadeType.ALL)
+	private List<Pedido> pedido;
 
 	public Produto() {
 	}
